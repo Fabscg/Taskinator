@@ -2,6 +2,7 @@
 var taskIdCounter = 0;
 var formEl = document.querySelector("#task-form");
 var tasksToDoEl = document.querySelector("#tasks-to-do");
+var pageContentEl = document.querySelector("#page-content");
 
 var taskFormHandler = function(event) {
   event.preventDefault();
@@ -25,32 +26,26 @@ var taskFormHandler = function(event) {
   createTaskEl(taskDataObj);
 };
 
-var createTaskEl = function (taskDataObj) {
-  // create list item
+var createTaskEl = function(taskDataObj) {
   var listItemEl = document.createElement("li");
   listItemEl.className = "task-item";
 
- listItemEl.setAttribute("data-task-id",taskIdCounter);
- var taskInfoEl = document.createElement("div");
- taskInfoEl.innerHTML = "<h3 class='task-name'>" + taskDataObj.name + "</h3><span class='task-type'>" + taskDataObj.type + "</span>";
- listItemEl.appendChild(taskInfoEl);
+  // add task id as a custom attribute
+  listItemEl.setAttribute("data-task-id", taskIdCounter);
 
-  
+  var taskInfoEl = document.createElement("div");
   taskInfoEl.className = "task-info";
   taskInfoEl.innerHTML = "<h3 class='task-name'>" + taskDataObj.name + "</h3><span class='task-type'>" + taskDataObj.type + "</span>";
   listItemEl.appendChild(taskInfoEl);
-
-
-  tasksToDoEl.appendChild(listItemEl);
   var taskActionsEl = createTaskActions(taskIdCounter);
   console.log(taskActionsEl);
 
-  // increase task counter for next unique ID
+  tasksToDoEl.appendChild(listItemEl);
 
+  // increase task counter for next unique id
   taskIdCounter++;
-
- 
 };
+
 
 var createTaskActions = function(taskId){
   var actionContainerEl = document.createElement("div");
@@ -61,7 +56,7 @@ var createTaskActions = function(taskId){
   var editButtonEl = document.createElement("button");
   editButtonEl.textContent = "Edit";
   editButtonEl.className = "btn edit-btn";
-  editButtonEl.setAttribute("dat-task-id", taskId);
+  editButtonEl.setAttribute("data-task-id", taskId);
 
   actionContainerEl.appendChild(editButtonEl);
 
@@ -93,11 +88,18 @@ var createTaskActions = function(taskId){
     listItemEl.appendChild(taskActionsEl);
 
     tasksToDoEl.appendChild(listItemEl); 
+    
   }
 
+  pageContentEl.addEventListener("click", taskButtonHandler);
 
-  return actionContainerEl;
-
+  var taskButtonHandler = function(event){
+    console.log(event.target);
+    if (event.target.matches(".delete-btn")) {
+      console.log("You clicked a delete Button");
+    }
+  };
+  
  
 }
 
